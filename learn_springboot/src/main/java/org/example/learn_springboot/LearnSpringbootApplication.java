@@ -2,20 +2,13 @@ package org.example.learn_springboot;
 
 import java.io.IOException;
 
-import org.apache.catalina.startup.Tomcat;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +19,11 @@ public class LearnSpringbootApplication {
 	public static void main(String[] args) {
 
 		TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
-		WebServer webServer = serverFactory.getWebServer(servletContext -> {
+		WebServer webServer = null;
+		/**
+		 * 1. 서블릿 띄우기
+		 */
+		 webServer = serverFactory.getWebServer(servletContext -> {
 			servletContext.addServlet("hello", new HttpServlet() {
 				protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
 					IOException {
@@ -41,7 +38,10 @@ public class LearnSpringbootApplication {
 			}).addMapping("/hello"); // /hello 로 들어오는 요청에 대해
 		}); //web server, servlet container 를 만드는 메소드
 
-		WebServer frontController = serverFactory.getWebServer(servletContext -> {
+		/**
+		 * 2. 요청을 front controller 를 통해서 받아서 처리하기
+		 */
+		webServer = serverFactory.getWebServer(servletContext -> {
 			servletContext.addServlet("frontcontroller", new HttpServlet() {
 				protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
 					IOException {
@@ -54,8 +54,11 @@ public class LearnSpringbootApplication {
 						String name = req.getParameter("name");
 						// hello controller 에서 다루는 로직은 다른 클래스에서
 						String result = helloController.hello(name);
-						resp.setStatus(HttpStatus.OK.value());
-						resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+
+						// resp.setStatus(HttpStatus.OK.value());
+						// resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+
+						resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
 						resp.getWriter().println(result);
 					} else if (req.getRequestURI().equals("/user")){
 						// ...
@@ -66,6 +69,31 @@ public class LearnSpringbootApplication {
 			}).addMapping("/*"); // 모든 요청에 대해 처리를 하겠다는 와일드 카드
 		});
 
-		frontController.start();
+		/**
+		 * 3 spring container 사용하기
+		 */
+		// spring container를 만들고
+		GenericApplicationContext genericApplicationContext= new GenericApplicationContext();
+		// 어떤 클래스를 이용해 bean 메타 정보를 만들 것인가가 필요함
+		genericApplicationContext.registerBean(HelloController.class);
+		// bean 을 어떤 클래스로 만들것인가 등등의 정보를 등록함
+		genericApplicationContext.refresh();
+
+		webServer= serverFactory.getWebServer(servletContext -> {
+		servletContext.addServlet("hello", new HttpServlet() {
+			protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+				if(req.getRequestURI().equals("/hello") && req.getMethod().equals("GET")) {
+					String name = req.getParameter("name");
+					HelloController helloController = genericApplicationContext.getBean(HelloController.class);
+					String result = helloController.hello(name);
+
+					resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
+					resp.getWriter().println(result);
+				}
+			}
+		}).addMapping("/hello");
+		});
+
+		webServer.start();
 	}
 }
