@@ -1,5 +1,6 @@
 package org.example.learn_springboot;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -229,8 +230,10 @@ public class LearnSpringbootApplication {
 		 annotationConfigWebApplicationContext.refresh();
 		 */
 
-		MySpringApplication.run(LearnSpringbootApplication.class, args);
+		// MySpringApplication.run(LearnSpringbootApplication.class, args);
+		SpringApplication.run(LearnSpringbootApplication.class, args);
 	}
+
 
 	@Bean
 	public ServletWebServerFactory servletWebServerFactory() {
@@ -242,7 +245,7 @@ public class LearnSpringbootApplication {
 		// 자기가 이용할 컨트롤러를 찾아야해서 스프링 컨테이너를 넘겨줘야한다
 		return new DispatcherServlet();
 	}
-	
+
 	/**
 	 * // 팩토리 메소드
 	 *
