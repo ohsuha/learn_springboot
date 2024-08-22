@@ -2,9 +2,16 @@ package org.example.learn_springboot;
 
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+@ComponentScan // 8. 컴포넌트가 붙은 클래스를 찾아서 등록해달라
+@Configuration // 7. 스프링 컨테이너가 빈 오브젝트를 가진 클래스라는 것을 인지해야 할때 붙여줌, 구성정보를 가지고 있는 클래스다
 public class LearnSpringbootApplication {
 
 	public static void main(String[] args) {
@@ -121,7 +128,6 @@ public class LearnSpringbootApplication {
 		 * 5. 서블릿 컨테이너나 그런 것들을 다루지 않고 개발 하고싶다~
 		 * 맵핑과 특정 컨트롤러로 바인딩해 보내주는 역할을 서블릿 코드 안에서 하고 있다.
 		 * 디스패쳐 서블릿을 통해 개발해보자
-		 */
 
 		GenericWebApplicationContext genericWebApplicationContext = new GenericWebApplicationContext();
 		genericWebApplicationContext.registerBean(HelloController.class);
@@ -138,12 +144,72 @@ public class LearnSpringbootApplication {
 				// 2번은 컨트롤러에 맵핑 정보를 추가해준다. @GetMapping
 			).addMapping("/*");
 		});
-
+		 */
 		/**
 		 * 6. 스프링 컨테이너로 통합
+		 * 스프링 컨테이늘 생성하고 빈을 초기화 하는 작업과, 서블릿 컨테이너를 만들고 필요한 디스패쳐 서블릿을 만드는 서블릿 초기화 작업
+		 * 이 두가지로 이뤄졌었는데 이걸 스프링 컨테이너가 초기화 되는 과정중에 모두 일어나도록 수정해 보자
+
+
+		 GenericWebApplicationContext genericWebApplicationContext = new GenericWebApplicationContext() {
+
+		 //스프링 컨테이너를 초기화 하는 중에 부가적인 작업이 있다면 overriding 해서 hook 메소드를 추가하자
+		 // 추가할때 다음과 같이 익명 클래스를 사용할 수 있다.
+		 @Override protected void onRefresh() {
+		 super.onRefresh();
+
+		 ServletWebServerFactory servletFactory = new TomcatServletWebServerFactory();
+
+		 WebServer dispatcherServlet = servletFactory.getWebServer(servletContext -> {
+		 servletContext.addServlet("dispatcherServlet",
+		 new DispatcherServlet(this) //this = genericWebApplicationContext
+		 ).addMapping("/*");
+		 });
+		 dispatcherServlet.start();
+		 }
+		 };
+		 genericWebApplicationContext.registerBean(HelloController.class);
+		 genericWebApplicationContext.registerBean(SimpleHelloService.class);
+		 genericWebApplicationContext.refresh();
 		 */
 
+		/** 7. bean 을 등록해서 스프링 컨테이너 내의 bean 이 다른 컴포넌트를 사용한다면 어느시점에 의존시켜줄 것인가를 설정해줄 수 있다.
+		 * 팩토리 메소드를 사용해서 빈 오브젝트를 다 생성하고 의존관계 주입도 다 하고 리턴하는 오브젝트를 스프링 컨테이너에게 빈으로 등록해서 나중에 사용해 하면 되는 것
+		 * 어떤 경우에는 빈 오브젝트를 만들고 초기화 하는 작업이 복잡할때가 있다. 이 복잡한 설정을 자바 코드로 만들면 간결해진다.
+		 */
+		AnnotationConfigWebApplicationContext annotationConfigWebApplicationContext = new AnnotationConfigWebApplicationContext() {
+			// 어노테이션이 붙은 것들을 이용해 구성 정보를 가져오는 클래스
 
-		webServer.start();
+			@Override
+			protected void onRefresh() {
+				super.onRefresh();
+
+				ServletWebServerFactory servletFactory = new TomcatServletWebServerFactory();
+
+				WebServer dispatcherServlet = servletFactory.getWebServer(servletContext -> {
+					servletContext.addServlet("dispatcherServlet",
+						new DispatcherServlet(this) //this = genericWebApplicationContext
+					).addMapping("/*");
+				});
+				dispatcherServlet.start();
+			}
+		};
+		// genericWebApplicationContext.registerBean(HelloController.class); //필요 없어짐, 빈을 어노테이션으로 등록하므로
+		// genericWebApplicationContext.registerBean(SimpleHelloService.class);
+		annotationConfigWebApplicationContext.register(LearnSpringbootApplication.class);
+		annotationConfigWebApplicationContext.refresh();
 	}
+
+	/**
+	// 팩토리 메소드
+	@Bean //7.스프링에게 빈이라고 알려주기
+	public HelloController helloController(HelloService helloService) {
+		return new HelloController(helloService);
+	}
+
+	@Bean
+	public HelloService helloService() {
+		return new SimpleHelloService(); // 빈을 주입받을때 어떤 타입을 기대하는가?
+	}
+	*/
 }

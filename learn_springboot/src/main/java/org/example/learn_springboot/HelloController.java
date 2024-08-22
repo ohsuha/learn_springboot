@@ -2,6 +2,7 @@ package org.example.learn_springboot;
 
 import java.util.Objects;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Controller
+@MyComponent
 // @RestController // 5. dispatcher 서블릿과는 관련이 없다., 이게 붙으면 아래의 모든 메서드가 @ResponseBody 가 붙여져 있다고 하는 것과 같다.
 //@RequestMapping // 5. 디스패쳐 서블릿이 모든 메소드를 다 뒤지면 느리니까 클래스에 컨트롤러로 명시해 줘서 빠르게 찾도록
 public class HelloController {
