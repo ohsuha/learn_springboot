@@ -30,9 +30,15 @@ public class HelloController implements ApplicationContextAware {
 		//SimpleHelloService simpleHelloService = new SimpleHelloService();
 		//직접 인스턴스를 만들지 않고 어셈블러에 의해 헬로 컨트롤러 클래스의 객체를 만들때 생성자 파라미터로 주입할 수 있도록 변경 하자
 
-		return helloService.sayHello(Objects.requireNonNull(name));
+		// return helloService.sayHello(Objects.requireNonNull(name));
 		// 만약 null 이면 예외를 던진다.
 		// null 인 경우를 방지 하고 null 이 아닐 때만 사용 가능
+
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException();
+		}
+
+		return helloService.sayHello(name);
 
 		// 5. 디스패쳐 서블릿은 리턴된 String을 보고 view를 리턴하라고 하기 때문에 view 를 찾는다.
 		//    원하는 작업에 맞는 view 가 없으니 404에러, 결과 String 을 그대로 바디에 넣어서 응답하기 위해서는
