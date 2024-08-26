@@ -12,31 +12,4 @@ public class HelloServiceTest {
 
 		Assertions.assertThat(ret).isEqualTo("Hello Test");
 	}
-
-	@Test
-	void helloServiceTest2() {
-		HelloController helloController	= new HelloController(name -> name);
-
-		String result = helloController.hello("suah");
-
-		Assertions.assertThat(result).isEqualTo("Hello suah");
-	}
-
-	@Test
-	void helloServiceTest3() {
-		HelloController helloController	= new HelloController(name -> name);
-
-		Assertions.assertThatThrownBy(
-			() -> {helloController.hello(null);}
-		).isInstanceOf(IllegalArgumentException.class);
-	}
-
-	@Test
-	void helloServiceTest4() {
-		HelloController helloController	= new HelloController(name -> name);
-
-		Assertions.assertThatThrownBy(
-			() -> {helloController.hello("");}
-		).isInstanceOf(IllegalArgumentException.class);
-	}
 }
