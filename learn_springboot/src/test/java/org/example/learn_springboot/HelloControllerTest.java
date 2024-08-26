@@ -12,7 +12,7 @@ public class HelloControllerTest {
 
 		String result = helloController.hello("suah");
 
-		Assertions.assertThat(result).isEqualTo("Hello suah");
+		Assertions.assertThat(result).isEqualTo("suah");
 	}
 
 	@Test
