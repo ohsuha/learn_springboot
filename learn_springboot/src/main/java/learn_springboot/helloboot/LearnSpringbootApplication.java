@@ -1,23 +1,17 @@
-package org.example.learn_springboot;
+package learn_springboot.helloboot;
 
+import learn_springboot.config.MySpringBootApplication;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 
-@ComponentScan // 8. 컴포넌트가 붙은 클래스를 찾아서 등록해달라
-@Configuration // 7. 스프링 컨테이너가 빈 오브젝트를 가진 클래스라는 것을 인지해야 할때 붙여줌, 구성정보를 가지고 있는 클래스다
+// @ComponentScan // 8. 컴포넌트가 붙은 클래스를 찾아서 등록해달라
+// @Configuration // 7. 스프링 컨테이너가 빈 오브젝트를 가진 클래스라는 것을 인지해야 할때 붙여줌, 구성정보를 가지고 있는 클래스다
+@MySpringBootApplication
 public class LearnSpringbootApplication {
 
 	public static void main(String[] args) {
-
-		TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
 		/**
+		TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+
 		 * 1. 서블릿 띄우기
 
 		 webServer = serverFactory.getWebServer(servletContext -> {
@@ -234,8 +228,9 @@ public class LearnSpringbootApplication {
 		SpringApplication.run(LearnSpringbootApplication.class, args);
 	}
 
-
-	@Bean
+	/**
+	config 로 이동
+	 @Bean
 	public ServletWebServerFactory servletWebServerFactory() {
 		return new TomcatServletWebServerFactory();
 	}
@@ -245,6 +240,7 @@ public class LearnSpringbootApplication {
 		// 자기가 이용할 컨트롤러를 찾아야해서 스프링 컨테이너를 넘겨줘야한다
 		return new DispatcherServlet();
 	}
+	/
 
 	/**
 	 * // 팩토리 메소드

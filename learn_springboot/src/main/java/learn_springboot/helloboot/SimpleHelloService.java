@@ -1,6 +1,4 @@
-package org.example.learn_springboot;
-
-import org.springframework.stereotype.Component;
+package learn_springboot.helloboot;
 
 @MyComponent
 public class SimpleHelloService implements HelloService {
