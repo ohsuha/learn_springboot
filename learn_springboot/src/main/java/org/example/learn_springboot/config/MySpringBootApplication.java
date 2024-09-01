@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @Target(ElementType.TYPE) //class, interface, enum 의 대상에 지정할때는 type
 @Configuration
 @ComponentScan
-@EnableAutoConfiguration
+@EnableMyAutoConfiguration
 public @interface MySpringBootApplication {
 }
