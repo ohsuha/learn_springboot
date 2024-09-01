@@ -5,8 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.example.learn_springboot.config.autoconfig.DispatcherServletConfig;
-import org.example.learn_springboot.config.autoconfig.TomcatWebServerConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -15,6 +13,6 @@ import org.springframework.context.annotation.Import;
 @Target(ElementType.TYPE)
 @Configuration
 @ComponentScan
-@Import({DispatcherServletConfig.class, TomcatWebServerConfig.class})
+@Import(MyAutoConfigImportSelector.class)
 public @interface EnableMyAutoConfiguration {
 }
