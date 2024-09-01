@@ -1,5 +1,6 @@
 package org.example.learn_springboot.helloboot;
 
+import org.example.learn_springboot.config.MySpringBootApplication;
 import org.springframework.boot.SpringApplication;
 
 // @ComponentScan // 8. 컴포넌트가 붙은 클래스를 찾아서 등록해달라
