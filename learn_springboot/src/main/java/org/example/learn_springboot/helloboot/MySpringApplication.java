@@ -1,4 +1,4 @@
-package org.example.learn_springboot;
+package org.example.learn_springboot.helloboot;
 
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;

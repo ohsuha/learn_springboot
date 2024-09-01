@@ -1,4 +1,4 @@
-package org.example.learn_springboot;
+package org.example.learn_springboot.config;
 
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;

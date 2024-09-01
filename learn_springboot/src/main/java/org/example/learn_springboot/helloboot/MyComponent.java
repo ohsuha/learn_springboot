@@ -1,4 +1,4 @@
-package org.example.learn_springboot;
+package org.example.learn_springboot.helloboot;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
