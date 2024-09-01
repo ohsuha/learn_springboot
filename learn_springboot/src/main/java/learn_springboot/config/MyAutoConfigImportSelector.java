@@ -1,10 +1,8 @@
-package org.example.learn_springboot.config;
+package learn_springboot.config;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
-import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
@@ -21,7 +19,6 @@ public class MyAutoConfigImportSelector implements DeferredImportSelector {
 		// return new String[] {
 		// 	"org.example.learn_springboot.config.autoconfig.DispatcherServletConfig",
 		// 	"org.example.learn_springboot.config.autoconfig.TomcatWebServerConfig"
-		//
 		// 	// 자동 구성 정보의 후보들을 불러오기, 어떤 방식들이 사용될지는 선택하게 하기
 		// };
 		/**

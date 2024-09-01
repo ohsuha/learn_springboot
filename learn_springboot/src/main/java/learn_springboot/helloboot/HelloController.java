@@ -1,4 +1,4 @@
-package org.example.learn_springboot.helloboot;
+package learn_springboot.helloboot;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package org.example.learn_springboot.helloboot;
+package learn_springboot.helloboot;
 
 @MyComponent
 public class SimpleHelloService implements HelloService {

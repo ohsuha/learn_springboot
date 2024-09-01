@@ -1,8 +1,8 @@
 package org.example.learn_springboot;
 
 import org.assertj.core.api.Assertions;
-import org.example.learn_springboot.helloboot.HelloDecorator;
-import org.example.learn_springboot.helloboot.SimpleHelloService;
+import learn_springboot.helloboot.HelloDecorator;
+import learn_springboot.helloboot.SimpleHelloService;
 import org.junit.jupiter.api.Test;
 
 public class HelloServiceTest {

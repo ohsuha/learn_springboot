@@ -1,6 +1,6 @@
-package org.example.learn_springboot.config.autoconfig;
+package learn_springboot.config.autoconfig;
 
-import org.example.learn_springboot.config.MyAutoConfiguration;
+import learn_springboot.config.MyAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.DispatcherServlet;
 

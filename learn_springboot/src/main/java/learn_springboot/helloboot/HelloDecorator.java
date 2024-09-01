@@ -1,4 +1,4 @@
-package org.example.learn_springboot.helloboot;
+package learn_springboot.helloboot;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
